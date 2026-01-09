@@ -1,0 +1,5 @@
+{
+  "name": "Cinematic Video Hub",
+  "description": "A high-end video curation platform that allows users to organize video links with synchronized metadata rows and AI-powered description generation.",
+  "requestFramePermissions": []
+}
