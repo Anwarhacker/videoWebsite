@@ -30,6 +30,10 @@ const videoSchema = new mongoose.Schema({
     required: [true, 'Category is required'],
     trim: true
   },
+  thumbnail: {
+    type: String,
+    trim: true
+  },
   timestamp: {
     type: Number,
     default: () => Date.now()

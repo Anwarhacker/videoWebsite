@@ -34,7 +34,7 @@ export const getVideoById = async (req, res) => {
 // @access  Public
 export const createVideo = async (req, res) => {
   try {
-    const { url, title, description, author, tags, category } = req.body;
+    const { url, title, description, author, tags, category, thumbnail } = req.body;
 
     // Validation
     if (!url || !title || !description || !author || !category) {
@@ -50,6 +50,7 @@ export const createVideo = async (req, res) => {
       author,
       tags: tags || [],
       category,
+      thumbnail,
       timestamp: Date.now()
     });
 

@@ -7,6 +7,7 @@ export interface VideoData {
   author: string;
   tags: string[];
   category: string;
+  thumbnail?: string;
   timestamp: number;
 }
 

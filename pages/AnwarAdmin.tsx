@@ -46,6 +46,7 @@ const AnwarAdmin: React.FC = () => {
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
   const [author, setAuthor] = useState('');
+  const [thumbnail, setThumbnail] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -92,6 +93,7 @@ const AnwarAdmin: React.FC = () => {
         author: author || 'Guest Contributor',
         tags: analysis.tags,
         category: category.trim() || analysis.category,
+        thumbnail,
         timestamp: Date.now(),
       };
 
@@ -102,6 +104,7 @@ const AnwarAdmin: React.FC = () => {
       setTitle('');
       setCategory('');
       setAuthor('');
+      setThumbnail('');
       setSuccess(true);
       
       // Refresh video list
@@ -155,7 +158,7 @@ const AnwarAdmin: React.FC = () => {
     return (
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-4">
         <div className="w-full max-w-md">
-          <div className="bg-zinc-900/50 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
+          <div className="bg-zinc-900/50 backdrop-blur-xl border border-white/10 rounded-2xl p-6 sm:p-8 shadow-2xl">
             {/* Logo */}
             <div className="flex justify-center mb-6">
               <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center">
@@ -199,9 +202,9 @@ const AnwarAdmin: React.FC = () => {
 
               <button
                 type="submit"
-                className="w-full px-6 py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors"
+                className="w-full px-6 py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors shadow-lg shadow-blue-900/20"
               >
-                Unlock Dashboard
+                Unlock TheVioceOfTruth
               </button>
 
               <button
@@ -233,7 +236,7 @@ const AnwarAdmin: React.FC = () => {
     <div className="min-h-screen bg-[#0a0a0a] text-white">
       {/* Header */}
       <header className="bg-zinc-900/50 border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
               <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -242,21 +245,21 @@ const AnwarAdmin: React.FC = () => {
             </div>
             <div>
               <h1 className="text-xl font-black uppercase italic">
-                Focus<span className="text-blue-500">Hub</span> Admin
+                TheVoice<span className="text-blue-500">OfTruth</span> Admin
               </h1>
               <p className="text-xs text-zinc-500">Content Management Dashboard</p>
             </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 w-full sm:w-auto">
             <button
               onClick={handleLogout}
-              className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-sm font-medium transition-colors"
+              className="flex-1 sm:flex-none px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-sm font-medium transition-colors"
             >
               🔒 Logout
             </button>
             <button
               onClick={() => navigate('/')}
-              className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm font-medium transition-colors"
+              className="flex-1 sm:flex-none px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm font-medium transition-colors"
             >
               ← Back to Gallery
             </button>
@@ -312,9 +315,9 @@ const AnwarAdmin: React.FC = () => {
             <h2 className="text-2xl font-bold mb-4">All Videos</h2>
             
             {loading ? (
-              <div className="text-center py-12">
-                <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                <p className="text-zinc-400">Loading videos...</p>
+              <div className="flex flex-col items-center justify-center py-20">
+                <div className="w-12 h-12 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin mb-4"></div>
+                <p className="text-zinc-500 font-medium animate-pulse">Loading gallery content...</p>
               </div>
             ) : videos.length === 0 ? (
               <div className="text-center py-12">
@@ -333,22 +336,26 @@ const AnwarAdmin: React.FC = () => {
                     key={video.id}
                     className="bg-zinc-800/50 border border-white/5 rounded-xl p-4 hover:border-white/10 transition-all"
                   >
-                    <div className="flex gap-4">
+                    <div className="flex flex-col sm:flex-row gap-4">
                       {/* Thumbnail */}
-                      <div className="w-32 h-20 bg-zinc-900 rounded-lg flex-shrink-0 overflow-hidden">
-                        <div className="w-full h-full flex items-center justify-center text-zinc-600">
-                          <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                            <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
-                          </svg>
-                        </div>
+                      <div className="w-full sm:w-32 h-40 sm:h-20 bg-zinc-900 rounded-lg flex-shrink-0 overflow-hidden">
+                        {video.thumbnail ? (
+                          <img src={video.thumbnail} alt={video.title} className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-zinc-600">
+                            <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                              <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+                            </svg>
+                          </div>
+                        )}
                       </div>
 
                       {/* Info */}
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-white truncate">{video.title}</h3>
+                        <h3 className="font-bold text-white text-lg sm:text-base mb-1 sm:mb-0 sm:truncate">{video.title}</h3>
                         <p className="text-sm text-zinc-400 line-clamp-2 mt-1">{video.description}</p>
-                        <div className="flex flex-wrap gap-2 mt-2">
+                        <div className="flex flex-wrap gap-2 mt-3 sm:mt-2">
                           <span className="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs rounded-full">
                             {video.category}
                           </span>
@@ -360,16 +367,16 @@ const AnwarAdmin: React.FC = () => {
                       </div>
 
                       {/* Actions */}
-                      <div className="flex flex-col gap-2">
+                      <div className="flex flex-row sm:flex-col gap-2 mt-2 sm:mt-0">
                         <button
                           onClick={() => setEditingVideo(video)}
-                          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium transition-colors"
+                          className="flex-1 sm:flex-none px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium transition-colors"
                         >
                           ✏️ Edit
                         </button>
                         <button
                           onClick={() => setDeleteConfirm(video.id)}
-                          className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-sm font-medium transition-colors"
+                          className="flex-1 sm:flex-none px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-sm font-medium transition-colors"
                         >
                           🗑️ Delete
                         </button>
@@ -398,6 +405,17 @@ const AnwarAdmin: React.FC = () => {
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                   placeholder="https://youtube.com/watch?v=..."
+                  className="w-full px-4 py-3 bg-black border border-zinc-800 rounded-xl text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-zinc-400 mb-2">Thumbnail URL (Optional)</label>
+                <input
+                  type="url"
+                  value={thumbnail}
+                  onChange={(e) => setThumbnail(e.target.value)}
+                  placeholder="https://..."
                   className="w-full px-4 py-3 bg-black border border-zinc-800 rounded-xl text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
                 />
               </div>
@@ -479,6 +497,17 @@ const AnwarAdmin: React.FC = () => {
               </div>
 
               <div>
+                <label className="block text-sm font-medium text-zinc-400 mb-2">Thumbnail URL</label>
+                <input
+                  type="url"
+                  value={editingVideo.thumbnail || ''}
+                  onChange={(e) => setEditingVideo({ ...editingVideo, thumbnail: e.target.value })}
+                  placeholder="https://..."
+                  className="w-full px-4 py-3 bg-black border border-zinc-800 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                />
+              </div>
+
+              <div>
                 <label className="block text-sm font-medium text-zinc-400 mb-2">Description</label>
                 <textarea
                   required
@@ -489,7 +518,7 @@ const AnwarAdmin: React.FC = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-zinc-400 mb-2">Category</label>
                   <input
@@ -523,7 +552,7 @@ const AnwarAdmin: React.FC = () => {
                 />
               </div>
 
-              <div className="flex gap-4 pt-4">
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <button
                   type="button"
                   onClick={() => setEditingVideo(null)}
@@ -551,7 +580,7 @@ const AnwarAdmin: React.FC = () => {
             <p className="text-zinc-400 mb-6">
               Are you sure you want to delete this video? This action cannot be undone.
             </p>
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-4">
               <button
                 onClick={() => setDeleteConfirm(null)}
                 className="flex-1 px-4 py-3 rounded-xl bg-zinc-800 text-zinc-300 font-semibold hover:bg-zinc-700 transition-colors"

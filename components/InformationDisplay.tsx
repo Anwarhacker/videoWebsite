@@ -10,8 +10,8 @@ const InformationDisplay: React.FC<InformationDisplayProps> = ({ video }) => {
   if (!video) return null;
 
   return (
-    <div className="w-full bg-zinc-900/40 backdrop-blur-xl border border-white/5 rounded-xl sm:rounded-2xl md:rounded-3xl p-4 sm:p-6 md:p-8 shadow-xl">
-      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 sm:gap-6">
+    <div className="w-full bg-zinc-900/40 backdrop-blur-xl border border-white/5 rounded-xl sm:rounded-2xl md:rounded-3xl p-4 sm:p-6 md:p-8 shadow-xl lg:absolute lg:inset-0 lg:overflow-y-auto">
+      <div className="flex flex-col md:flex-row lg:flex-col gap-4 sm:gap-6">
         <div className="flex-1 space-y-3 sm:space-y-4">
           <div className="flex flex-wrap items-center gap-2 sm:gap-3">
             <span className="inline-block mr-2 sm:mr-3 px-2.5 py-0.5 sm:px-3 sm:py-1 bg-blue-500/10 text-blue-400 text-[10px] sm:text-xs font-bold uppercase tracking-widest rounded-full border border-blue-500/20">
@@ -39,7 +39,7 @@ const InformationDisplay: React.FC<InformationDisplayProps> = ({ video }) => {
           </div>
         </div>
 
-        <div className="md:w-48 shrink-0 flex flex-col items-start md:items-end justify-center">
+        <div className="md:w-48 lg:w-full shrink-0 flex flex-col items-start md:items-end lg:items-start justify-center border-t md:border-t-0 lg:border-t border-white/5 pt-4 md:pt-0 lg:pt-4">
           <div className="text-zinc-500 text-xs sm:text-sm mb-1 uppercase tracking-tighter">Curated By</div>
           <div className="text-white text-sm sm:text-base font-semibold flex items-center gap-2">
             <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-xs">
