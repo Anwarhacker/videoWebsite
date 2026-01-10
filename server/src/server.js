@@ -7,11 +7,23 @@ import videoRoutes from './routes/videos.js';
 // Load environment variables
 dotenv.config();
 
-// Connect to MongoDB
-connectDB();
-
 // Create Express app
 const app = express();
+
+// Middleware to ensure DB connection for each request (serverless)
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    console.error('Database connection error:', error);
+    res.status(503).json({ 
+      message: 'Database connection failed',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+});
+
 
 // Middleware
 app.use(cors());
