@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => {
       host: '0.0.0.0',
       proxy: {
         '/api': {
-          target: 'https://video-website-gamma.vercel.app',
+          target: 'https://video-website-rxsu.vercel.app/',
           changeOrigin: true,
         }
       }
