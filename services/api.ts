@@ -1,6 +1,10 @@
 import { VideoData } from '../types';
 
-const API_BASE_URL = '/api';
+// Use production backend URL when deployed, local proxy in development
+const API_BASE_URL = import.meta.env.PROD
+  ? 'https://video-website-rxsu.vercel.app/api'
+  : '/api';
+
 
 // Helper function for API requests
 async function apiRequest<T>(
