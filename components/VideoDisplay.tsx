@@ -128,7 +128,7 @@ const VideoDisplay: React.FC<VideoDisplayProps> = ({ video }) => {
                 height: '100%',
                 margin: 0,
               }}
-            />
+            ></blockquote>
           </div>
         ) : (
           /* Preview Card */

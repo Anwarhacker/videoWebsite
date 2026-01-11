@@ -283,16 +283,62 @@ const HomePage: React.FC = () => {
                       return `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0`;
                     }
                   }
+                  
+                  // Instagram - Reels and Posts
+                  if (url.includes('instagram.com')) {
+                    // Instagram Reel: instagram.com/reel/CODE or /p/CODE
+                    let postId = '';
+                    if (url.includes('/reel/')) {
+                      postId = url.split('/reel/')[1]?.split('?')[0]?.split('/')[0];
+                    } else if (url.includes('/p/')) {
+                      postId = url.split('/p/')[1]?.split('?')[0]?.split('/')[0];
+                    }
+                    
+                    if (postId) {
+                      return `https://www.instagram.com/p/${postId}/embed`;
+                    }
+                  }
+                  
+                  // TikTok
+                  if (url.includes('tiktok.com')) {
+                    // TikTok video: tiktok.com/@user/video/VIDEO_ID
+                    const videoId = url.split('/video/')[1]?.split('?')[0];
+                    if (videoId) {
+                      return `https://www.tiktok.com/embed/v2/${videoId}`;
+                    }
+                  }
+                  
+                  // Facebook
+                  if (url.includes('facebook.com') || url.includes('fb.watch')) {
+                    // For Facebook, we'll use the video plugin
+                    const encodedUrl = encodeURIComponent(url);
+                    return `https://www.facebook.com/plugins/video.php?href=${encodedUrl}&show_text=false&width=734`;
+                  }
+                  
                   // Vimeo
                   if (url.includes('vimeo.com')) {
                     const videoId = url.split('vimeo.com/')[1]?.split('?')[0];
                     return `https://player.vimeo.com/video/${videoId}`;
                   }
+                  
                   // Dailymotion
                   if (url.includes('dailymotion.com')) {
                     const videoId = url.split('video/')[1]?.split('?')[0];
                     return `https://www.dailymotion.com/embed/video/${videoId}`;
                   }
+                  
+                  // Twitch
+                  if (url.includes('twitch.tv')) {
+                    // Twitch clip or VOD
+                    if (url.includes('/clip/')) {
+                      const clipId = url.split('/clip/')[1]?.split('?')[0];
+                      return `https://clips.twitch.tv/embed?clip=${clipId}&parent=${window.location.hostname}`;
+                    } else if (url.includes('/videos/')) {
+                      const videoId = url.split('/videos/')[1]?.split('?')[0];
+                      return `https://player.twitch.tv/?video=${videoId}&parent=${window.location.hostname}&autoplay=false`;
+                    }
+                  }
+                  
                   // Default: return original URL
                   return url;
                 };
@@ -305,7 +351,7 @@ const HomePage: React.FC = () => {
                     className="flex-shrink-0 w-[88%] bg-zinc-800/50 border border-white/5 rounded-xl overflow-hidden hover:border-white/10 transition-all group snap-start"
                   >
                     {/* Embedded Video Player */}
-                    <div className="relative aspect-video bg-black">
+                    <div className="relative aspect-[9/16] min-h-[500px] bg-black">
                       <iframe
                         src={embedUrl}
                         className="absolute inset-0 w-full h-full"
