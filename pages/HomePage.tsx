@@ -184,6 +184,7 @@ const HomePage: React.FC = () => {
           ))}
         </div>
       </div>
+      
 
       {/* Main Experience Wrapper */}
       <main className="w-full max-w-6xl flex flex-col gap-4 sm:gap-6 relative">
@@ -195,6 +196,42 @@ const HomePage: React.FC = () => {
           <section className="w-full lg:w-[60%]">
             <VideoDisplay video={currentVideo} />
           </section>
+           {/* Navigation Controls - Below both on large screens */}
+        <nav className="w-full flex items-center justify-between gap-4 py-2 px-1">
+          <button
+            onClick={handlePrev}
+            className="group flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-zinc-900 border border-white/5 text-white hover:bg-blue-600 hover:border-blue-400 transition-all shadow-xl active:scale-95 touch-target"
+            aria-label="Previous video"
+          >
+            <svg className="w-5 h-5 sm:w-6 sm:h-6 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          <div className="flex-1 flex flex-col items-center">
+            <div className="px-4 py-1.5 bg-zinc-900 rounded-full border border-white/5 shadow-inner">
+              <span className="text-sm font-bold text-zinc-400">
+                {filteredVideos.length > 0 ? (currentIndex + 1) : 0} <span className="opacity-40">/</span> {filteredVideos.length}
+              </span>
+            </div>
+            <div className="mt-2 h-1 w-24 sm:w-32 bg-zinc-900 rounded-full overflow-hidden">
+               <div 
+                  className="h-full bg-blue-500 transition-all duration-500 ease-out"
+                  style={{ width: `${filteredVideos.length > 0 ? ((currentIndex + 1) / filteredVideos.length) * 100 : 0}%` }}
+               />
+            </div>
+          </div>
+
+          <button
+            onClick={handleNext}
+            className="group flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-zinc-900 border border-white/5 text-white hover:bg-blue-600 hover:border-blue-400 transition-all shadow-xl active:scale-90 touch-target"
+            aria-label="Next video"
+          >
+            <svg className="w-5 h-5 sm:w-6 sm:h-6 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </nav>
 
           {/* Information Section - 40% width on large screens */}
           <section className="w-full lg:w-[40%] lg:relative">
@@ -285,42 +322,7 @@ const HomePage: React.FC = () => {
           </div>
         )}
 
-        {/* Navigation Controls - Below both on large screens */}
-        <nav className="w-full flex items-center justify-between gap-4 py-2 px-1">
-          <button
-            onClick={handlePrev}
-            className="group flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-zinc-900 border border-white/5 text-white hover:bg-blue-600 hover:border-blue-400 transition-all shadow-xl active:scale-95 touch-target"
-            aria-label="Previous video"
-          >
-            <svg className="w-5 h-5 sm:w-6 sm:h-6 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-
-          <div className="flex-1 flex flex-col items-center">
-            <div className="px-4 py-1.5 bg-zinc-900 rounded-full border border-white/5 shadow-inner">
-              <span className="text-sm font-bold text-zinc-400">
-                {filteredVideos.length > 0 ? (currentIndex + 1) : 0} <span className="opacity-40">/</span> {filteredVideos.length}
-              </span>
-            </div>
-            <div className="mt-2 h-1 w-24 sm:w-32 bg-zinc-900 rounded-full overflow-hidden">
-               <div 
-                  className="h-full bg-blue-500 transition-all duration-500 ease-out"
-                  style={{ width: `${filteredVideos.length > 0 ? ((currentIndex + 1) / filteredVideos.length) * 100 : 0}%` }}
-               />
-            </div>
-          </div>
-
-          <button
-            onClick={handleNext}
-            className="group flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-zinc-900 border border-white/5 text-white hover:bg-blue-600 hover:border-blue-400 transition-all shadow-xl active:scale-90 touch-target"
-            aria-label="Next video"
-          >
-            <svg className="w-5 h-5 sm:w-6 sm:h-6 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-        </nav>
+        
 
         {/* Bottom Decorative Element */}
         <div className="mt-4 sm:mt-6 md:mt-8 mb-4 flex justify-center opacity-30">
