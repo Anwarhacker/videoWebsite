@@ -4,14 +4,19 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
+
+  // Use environment variable for API target, fallback to localhost for development
+  const apiTarget = env.VITE_API_URL || 'http://localhost:5000';
+
   return {
     server: {
       port: 3000,
       host: '0.0.0.0',
       proxy: {
         '/api': {
-          target: 'https://video-website-rxsu.vercel.app',
+          target: apiTarget,
           changeOrigin: true,
+          rewrite: (path) => path, // Keep /api prefix
         }
       }
     },

@@ -34,6 +34,23 @@ const videoSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
+  relatedVideos: [{
+    url: {
+      type: String,
+      required: false,
+      trim: true
+    },
+    title: {
+      type: String,
+      trim: true,
+      default: ''
+    },
+    thumbnail: {
+      type: String,
+      trim: true,
+      default: ''
+    }
+  }],
   timestamp: {
     type: Number,
     default: () => Date.now()

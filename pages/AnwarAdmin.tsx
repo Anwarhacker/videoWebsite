@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { analyzeVideoWithGemini } from '../services/geminiService';
-import { VideoData } from '../types';
+import { VideoData, RelatedVideo } from '../types';
 import { videoAPI } from '../services/api';
 
 const AnwarAdmin: React.FC = () => {
@@ -47,6 +47,7 @@ const AnwarAdmin: React.FC = () => {
   const [category, setCategory] = useState('');
   const [author, setAuthor] = useState('');
   const [thumbnail, setThumbnail] = useState('');
+  const [relatedVideos, setRelatedVideos] = useState<RelatedVideo[]>([]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -94,6 +95,7 @@ const AnwarAdmin: React.FC = () => {
         tags: analysis.tags,
         category: category.trim() || analysis.category,
         thumbnail,
+        relatedVideos: relatedVideos.length > 0 ? relatedVideos : undefined,
         timestamp: Date.now(),
       };
 
@@ -105,6 +107,7 @@ const AnwarAdmin: React.FC = () => {
       setCategory('');
       setAuthor('');
       setThumbnail('');
+      setRelatedVideos([]);
       setSuccess(true);
       
       // Refresh video list
@@ -455,6 +458,82 @@ const AnwarAdmin: React.FC = () => {
                 />
               </div>
 
+              {/* Related Videos Section */}
+              <div className="border-t border-zinc-800 pt-5">
+                <div className="flex items-center justify-between mb-3">
+                  <label className="block text-sm font-medium text-zinc-400">
+                    Related Videos (Optional)
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setRelatedVideos([...relatedVideos, { url: '', title: '', thumbnail: '' }])}
+                    className="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-xs font-medium transition-colors flex items-center gap-1"
+                  >
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                    </svg>
+                    Add Related Video
+                  </button>
+                </div>
+
+                {relatedVideos.length > 0 && (
+                  <div className="space-y-3">
+                    {relatedVideos.map((rv, index) => (
+                      <div key={index} className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-4">
+                        <div className="flex items-start justify-between mb-3">
+                          <span className="text-xs font-semibold text-zinc-500">Related Video {index + 1}</span>
+                          <button
+                            type="button"
+                            onClick={() => setRelatedVideos(relatedVideos.filter((_, i) => i !== index))}
+                            className="text-red-400 hover:text-red-300 transition-colors"
+                          >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </div>
+                        <div className="space-y-2">
+                          <input
+                            type="url"
+                            required
+                            value={rv.url}
+                            onChange={(e) => {
+                              const updated = [...relatedVideos];
+                              updated[index].url = e.target.value;
+                              setRelatedVideos(updated);
+                            }}
+                            placeholder="Video URL (required)"
+                            className="w-full px-3 py-2 bg-black border border-zinc-800 rounded-lg text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                          />
+                          <input
+                            type="text"
+                            value={rv.title || ''}
+                            onChange={(e) => {
+                              const updated = [...relatedVideos];
+                              updated[index].title = e.target.value;
+                              setRelatedVideos(updated);
+                            }}
+                            placeholder="Title (optional)"
+                            className="w-full px-3 py-2 bg-black border border-zinc-800 rounded-lg text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                          />
+                          <input
+                            type="url"
+                            value={rv.thumbnail || ''}
+                            onChange={(e) => {
+                              const updated = [...relatedVideos];
+                              updated[index].thumbnail = e.target.value;
+                              setRelatedVideos(updated);
+                            }}
+                            placeholder="Thumbnail URL (optional)"
+                            className="w-full px-3 py-2 bg-black border border-zinc-800 rounded-lg text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               <button
                 type="submit"
                 disabled={isAnalyzing || !url}
@@ -550,6 +629,91 @@ const AnwarAdmin: React.FC = () => {
                   onChange={(e) => setEditingVideo({ ...editingVideo, tags: e.target.value.split(',').map(t => t.trim()) })}
                   className="w-full px-4 py-3 bg-black border border-zinc-800 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
                 />
+              </div>
+
+              {/* Related Videos Section in Edit Modal */}
+              <div className="border-t border-zinc-800 pt-4">
+                <div className="flex items-center justify-between mb-3">
+                  <label className="block text-sm font-medium text-zinc-400">
+                    Related Videos
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const currentRelated = editingVideo.relatedVideos || [];
+                      setEditingVideo({
+                        ...editingVideo,
+                        relatedVideos: [...currentRelated, { url: '', title: '', thumbnail: '' }]
+                      });
+                    }}
+                    className="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-xs font-medium transition-colors flex items-center gap-1"
+                  >
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                    </svg>
+                    Add Related Video
+                  </button>
+                </div>
+
+                {editingVideo.relatedVideos && editingVideo.relatedVideos.length > 0 && (
+                  <div className="space-y-3">
+                    {editingVideo.relatedVideos.map((rv, index) => (
+                      <div key={index} className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-3">
+                        <div className="flex items-start justify-between mb-2">
+                          <span className="text-xs font-semibold text-zinc-500">Related Video {index + 1}</span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updated = editingVideo.relatedVideos?.filter((_, i) => i !== index) || [];
+                              setEditingVideo({ ...editingVideo, relatedVideos: updated });
+                            }}
+                            className="text-red-400 hover:text-red-300 transition-colors"
+                          >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </div>
+                        <div className="space-y-2">
+                          <input
+                            type="url"
+                            required
+                            value={rv.url}
+                            onChange={(e) => {
+                              const updated = [...(editingVideo.relatedVideos || [])];
+                              updated[index].url = e.target.value;
+                              setEditingVideo({ ...editingVideo, relatedVideos: updated });
+                            }}
+                            placeholder="Video URL (required)"
+                            className="w-full px-3 py-2 bg-black border border-zinc-800 rounded-lg text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                          />
+                          <input
+                            type="text"
+                            value={rv.title || ''}
+                            onChange={(e) => {
+                              const updated = [...(editingVideo.relatedVideos || [])];
+                              updated[index].title = e.target.value;
+                              setEditingVideo({ ...editingVideo, relatedVideos: updated });
+                            }}
+                            placeholder="Title (optional)"
+                            className="w-full px-3 py-2 bg-black border border-zinc-800 rounded-lg text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                          />
+                          <input
+                            type="url"
+                            value={rv.thumbnail || ''}
+                            onChange={(e) => {
+                              const updated = [...(editingVideo.relatedVideos || [])];
+                              updated[index].thumbnail = e.target.value;
+                              setEditingVideo({ ...editingVideo, relatedVideos: updated });
+                            }}
+                            placeholder="Thumbnail URL (optional)"
+                            className="w-full px-3 py-2 bg-black border border-zinc-800 rounded-lg text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-4">

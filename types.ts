@@ -1,4 +1,10 @@
 
+export interface RelatedVideo {
+  url: string;
+  title?: string;
+  thumbnail?: string;
+}
+
 export interface VideoData {
   id: string;
   url: string;
@@ -8,6 +14,7 @@ export interface VideoData {
   tags: string[];
   category: string;
   thumbnail?: string;
+  relatedVideos?: RelatedVideo[];
   timestamp: number;
 }
 

@@ -108,6 +108,14 @@ const HomePage: React.FC = () => {
 
   const currentVideo = filteredVideos[currentIndex] || null;
 
+  // Debug: Log current video to check if relatedVideos exists
+  useEffect(() => {
+    if (currentVideo) {
+      console.log('Current Video Data:', currentVideo);
+      console.log('Has Related Videos:', currentVideo.relatedVideos?.length || 0);
+    }
+  }, [currentVideo]);
+
   // Loading state
   if (loading) {
     return (
@@ -194,6 +202,66 @@ const HomePage: React.FC = () => {
           </section>
           
         </div>
+
+        {/* Related Videos Section - Full width below main video */}
+        {currentVideo?.relatedVideos && currentVideo.relatedVideos.length > 0 && (
+          <div className="w-full bg-zinc-900/40 backdrop-blur-xl border border-white/5 rounded-xl sm:rounded-2xl md:rounded-3xl p-4 sm:p-6 md:p-8 shadow-xl">
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6 flex items-center gap-2">
+              <svg className="w-6 h-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+              Related Videos
+            </h3>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {currentVideo.relatedVideos.map((relatedVideo, index) => (
+                <div 
+                  key={index} 
+                  className="bg-zinc-800/50 border border-white/5 rounded-xl overflow-hidden hover:border-white/10 hover:bg-zinc-800/70 transition-all group"
+                >
+                  {/* Thumbnail */}
+                  <div className="w-full aspect-video bg-zinc-900 overflow-hidden">
+                    {relatedVideo.thumbnail ? (
+                      <img 
+                        src={relatedVideo.thumbnail} 
+                        alt={relatedVideo.title || `Related video ${index + 1}`}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-zinc-600">
+                        <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Info */}
+                  <div className="p-3 sm:p-4">
+                    {relatedVideo.title && (
+                      <h4 className="text-sm font-semibold text-white mb-2 line-clamp-2 min-h-[2.5rem]">
+                        {relatedVideo.title}
+                      </h4>
+                    )}
+                    <a 
+                      href={relatedVideo.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition-colors"
+                    >
+                      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Watch Video
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Navigation Controls - Below both on large screens */}
         <nav className="w-full flex items-center justify-between gap-4 py-2 px-1">
