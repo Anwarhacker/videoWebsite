@@ -54,3 +54,4 @@ const InformationDisplay: React.FC<InformationDisplayProps> = ({ video }) => {
 };
 
 export default InformationDisplay;
+

@@ -213,52 +213,74 @@ const HomePage: React.FC = () => {
               Related Videos
             </h3>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {currentVideo.relatedVideos.map((relatedVideo, index) => (
-                <div 
-                  key={index} 
-                  className="bg-zinc-800/50 border border-white/5 rounded-xl overflow-hidden hover:border-white/10 hover:bg-zinc-800/70 transition-all group"
-                >
-                  {/* Thumbnail */}
-                  <div className="w-full aspect-video bg-zinc-900 overflow-hidden">
-                    {relatedVideo.thumbnail ? (
-                      <img 
-                        src={relatedVideo.thumbnail} 
-                        alt={relatedVideo.title || `Related video ${index + 1}`}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {currentVideo.relatedVideos.map((relatedVideo, index) => {
+                // Extract video ID and create embed URL
+                const getEmbedUrl = (url: string) => {
+                  // YouTube - handle multiple formats
+                  if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                    let videoId = '';
+                    
+                    // YouTube Shorts: youtube.com/shorts/VIDEO_ID
+                    if (url.includes('/shorts/')) {
+                      videoId = url.split('/shorts/')[1]?.split('?')[0];
+                    }
+                    // Short link: youtu.be/VIDEO_ID
+                    else if (url.includes('youtu.be/')) {
+                      videoId = url.split('youtu.be/')[1]?.split('?')[0];
+                    }
+                    // Standard: youtube.com/watch?v=VIDEO_ID
+                    else if (url.includes('v=')) {
+                      videoId = url.split('v=')[1]?.split('&')[0];
+                    }
+                    
+                    if (videoId) {
+                      return `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0`;
+                    }
+                  }
+                  // Vimeo
+                  if (url.includes('vimeo.com')) {
+                    const videoId = url.split('vimeo.com/')[1]?.split('?')[0];
+                    return `https://player.vimeo.com/video/${videoId}`;
+                  }
+                  // Dailymotion
+                  if (url.includes('dailymotion.com')) {
+                    const videoId = url.split('video/')[1]?.split('?')[0];
+                    return `https://www.dailymotion.com/embed/video/${videoId}`;
+                  }
+                  // Default: return original URL
+                  return url;
+                };
+
+                const embedUrl = getEmbedUrl(relatedVideo.url);
+
+                return (
+                  <div 
+                    key={index} 
+                    className="bg-zinc-800/50 border border-white/5 rounded-xl overflow-hidden hover:border-white/10 transition-all group"
+                  >
+                    {/* Embedded Video Player */}
+                    <div className="relative aspect-video bg-black">
+                      <iframe
+                        src={embedUrl}
+                        className="absolute inset-0 w-full h-full"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        title={relatedVideo.title || `Related Video ${index + 1}`}
                       />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-zinc-600">
-                        <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                    </div>
+                    
+                    {/* Video Info */}
+                    {relatedVideo.title && (
+                      <div className="p-3 sm:p-4">
+                        <h4 className="text-sm font-semibold text-white group-hover:text-blue-400 transition-colors line-clamp-2 min-h-[2.5rem]">
+                          {relatedVideo.title}
+                        </h4>
                       </div>
                     )}
                   </div>
-                  
-                  {/* Info */}
-                  <div className="p-3 sm:p-4">
-                    {relatedVideo.title && (
-                      <h4 className="text-sm font-semibold text-white mb-2 line-clamp-2 min-h-[2.5rem]">
-                        {relatedVideo.title}
-                      </h4>
-                    )}
-                    <a 
-                      href={relatedVideo.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition-colors"
-                    >
-                      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      Watch Video
-                    </a>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
