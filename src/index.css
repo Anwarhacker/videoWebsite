@@ -2,28 +2,10 @@
 
 @source "../**/*.{ts,tsx,js,jsx}";
 @source "../components/**/*.{ts,tsx,js,jsx}";
-@source "../*.{ts,tsx,js,jsx}";
-
-@layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-
-  html,
-  body,
-  #root {
-    height: 100%;
-  }
-
-  body {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-}
 
 @layer utilities {
 
-  /* Hide scrollbar while keeping scroll functionality */
+  /* Hide scrollbar but keep functionality */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -33,7 +15,7 @@
     scrollbar-width: none;
   }
 
-  /* Ensure minimum touch target size on mobile */
+  /* Touch target for better mobile UX */
   @media (max-width: 640px) {
     .touch-target {
       min-width: 44px;

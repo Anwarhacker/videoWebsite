@@ -195,8 +195,7 @@ const HomePage: React.FC = () => {
           {/* Video Section - 60% width on large screens */}
           <section className="w-full lg:w-[60%]">
             <VideoDisplay video={currentVideo} />
-          </section>
-           {/* Navigation Controls - Below both on large screens */}
+            {/* Navigation Controls - Below both on large screens */}
         <nav className="w-full flex items-center justify-between gap-4 py-2 px-1">
           <button
             onClick={handlePrev}
@@ -232,6 +231,8 @@ const HomePage: React.FC = () => {
             </svg>
           </button>
         </nav>
+          </section>
+           
 
           {/* Information Section - 40% width on large screens */}
           <section className="w-full lg:w-[40%] lg:relative">
@@ -250,8 +251,15 @@ const HomePage: React.FC = () => {
               Related Videos
             </h3>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {currentVideo.relatedVideos.map((relatedVideo, index) => {
+            {/* Horizontal scroll container with gradient fade edges */}
+            <div className="relative">
+              {/* Gradient fade edges */}
+              <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-zinc-900/80 to-transparent z-10 md:hidden"></div>
+              <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-zinc-900/80 to-transparent z-10 md:hidden"></div>
+              
+              {/* Scrollable container */}
+              <div className="flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-2 no-scrollbar md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6">
+                {currentVideo.relatedVideos.map((relatedVideo, index) => {
                 // Extract video ID and create embed URL
                 const getEmbedUrl = (url: string) => {
                   // YouTube - handle multiple formats
@@ -294,7 +302,7 @@ const HomePage: React.FC = () => {
                 return (
                   <div 
                     key={index} 
-                    className="bg-zinc-800/50 border border-white/5 rounded-xl overflow-hidden hover:border-white/10 transition-all group"
+                    className="flex-shrink-0 w-[88%] bg-zinc-800/50 border border-white/5 rounded-xl overflow-hidden hover:border-white/10 transition-all group snap-start"
                   >
                     {/* Embedded Video Player */}
                     <div className="relative aspect-video bg-black">
@@ -318,6 +326,7 @@ const HomePage: React.FC = () => {
                   </div>
                 );
               })}
+            </div>
             </div>
           </div>
         )}
