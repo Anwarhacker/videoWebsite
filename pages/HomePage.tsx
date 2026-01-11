@@ -148,7 +148,7 @@ const HomePage: React.FC = () => {
         </div>
       )}
       {/* Header */}
-      <header className="w-full max-w-6xl flex justify-between items-center mb-4 sm:mb-6 md:mb-8 mt-2 sm:mt-0">
+      <header className="w-full max-w-6xl flex justify-between items-center mb-8 sm:mb-10 md:mb-12 mt-2 sm:mt-0">
         <div className="flex items-center gap-2">
           <div className="w-9 h-9 sm:w-10 sm:h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/20">
             <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
