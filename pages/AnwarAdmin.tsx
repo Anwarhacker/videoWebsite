@@ -444,7 +444,7 @@ const AnwarAdmin: React.FC = () => {
                     placeholder="e.g., Technology, Animation"
                     className="w-full px-4 py-3 bg-black border border-zinc-800 rounded-xl text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
                   />
-                </div> rape  , mob lynching , dirty leaders ,ReligiousInsult, AntiMuslimHate, hate speech , islam kindness  
+                </div> rape  , mob lynching , dirty leaders ,ReligiousInsult, AntiMuslimHate, hate speech , islam kindness , TheVoiceOfTruth
               </div>
 
               <div>
